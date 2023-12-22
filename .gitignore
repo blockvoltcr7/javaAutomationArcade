@@ -1,8 +1,9 @@
-# Ignore IntelliJ project-specific files
-.idea/*
-
-# Ignore Build files
-build/
-
-# Ignore Gradle files
-.gradle/
+# IntelliJ IDEA files
+.idea/
+.idea/workspace.xml
+/build/*
+# Gradle files
+gradle/wrapper/gradle-wrapper.jar
+gradlew
+gradlew.bat
+.gradle/*
