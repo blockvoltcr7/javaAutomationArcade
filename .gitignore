@@ -1,0 +1,8 @@
+# Ignore IntelliJ project-specific files
+.idea/*
+
+# Ignore Build files
+build/
+
+# Ignore Gradle files
+.gradle/
