@@ -39,6 +39,9 @@ dependencies {
     implementation 'io.rest-assured:rest-assured-parent:4.4.0'
     implementation 'io.rest-assured:spring-mock-mvc:4.4.0'
     implementation 'io.rest-assured:spring-web-test-client:4.4.0'
+    implementation group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
+
+
     //import junit
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     //import hamcrest
