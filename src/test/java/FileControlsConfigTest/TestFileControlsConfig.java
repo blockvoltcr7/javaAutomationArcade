@@ -20,19 +20,54 @@ public class TestFileControlsConfig {
             e.printStackTrace();
         }
 
-        //last rn count multiplied by (file control percent  / 100)
-        int lastRnCount = jsonObject.getInt("lastRunTotalCountUS");
-        double percent = jsonObject.getDouble("fileControlPercentUSA");
+        int currentTotalRecords = 15236;
 
-        Long offSetCount = BigDecimal.valueOf(lastRnCount).multiply(BigDecimal.valueOf(percent / 100)).longValue();
-        System.out.println("Offset Count: " + offSetCount);
+        int lastRunCount = 0;
+        double fileControlPercent = 0;
+        String regionType = "USA";
 
-        //calculate the high range by adding the offset count to the last run count
-        Long highRange = lastRnCount + offSetCount;
-        System.out.println("High Range: " + highRange);
-        //calculate the low range by subtracting the offset count from the last run count
-        Long lowRange = lastRnCount - offSetCount;
-        System.out.println("Low Range: " + lowRange);
+
+        switch (regionType) {
+            case "USA":
+                lastRunCount = jsonObject.getInt("lastRunTotalCountUS");
+                fileControlPercent = jsonObject.getDouble("fileControlPercentUSA");
+                break;
+            case "CAN":
+                lastRunCount = jsonObject.getInt("lastRunTotalCountCAN");
+                fileControlPercent = jsonObject.getDouble("fileControlPercentCAN");
+                break;
+            case "EU":
+                lastRunCount = jsonObject.getInt("lastRunTotalCountEU");
+                fileControlPercent = jsonObject.getDouble("fileControlPercentEU");
+                break;
+        }
+
+
+        System.out.println("fileControlPercent: " + fileControlPercent);
+        System.out.println("lastRunCount: " + lastRunCount);
+        System.out.println("currentTotalRecords: " + currentTotalRecords);
+
+        System.out.println("lastRunCount * (filecontrol percent / 100): " + lastRunCount * (fileControlPercent / 100));
+        long offSetCount = BigDecimal.valueOf(lastRunCount).multiply(BigDecimal.valueOf(fileControlPercent / 100)).longValue();
+        Long highRange = lastRunCount + offSetCount;
+        Long lowRange = lastRunCount - offSetCount;
+
+        System.out.println("offSetCount: " + offSetCount);
+        System.out.println("highRange: " + highRange);
+        System.out.println("lowRange: " + lowRange);
+        System.out.println("currentTotalRecords: " + currentTotalRecords);
+
+        if(currentTotalRecords > highRange || currentTotalRecords < lowRange){
+            System.out.println("false");
+            System.out.println("currentTotalRecords: " + currentTotalRecords);
+            System.out.println("highRange: " + highRange);
+            System.out.println("lowRange: " + lowRange);
+            System.out.println("currentTotalRecords > highRange || currentTotalRecords < lowRange");
+
+        }
+        else{
+            System.out.println("true");
+        }
 
 
     }

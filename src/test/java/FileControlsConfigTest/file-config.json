@@ -2,7 +2,24 @@
   "fileControlPercentUSA": 15.0,
   "fileControlPercentCAN": 15.0,
   "fileControlPercentEU": 300.0,
-  "lastRunTotalCountUS": 13800,
+  "lastRunTotalCountUS": 17926,
   "lastRunTotalCountCAN": 832,
-  "lastRunTotalCountEU": 144
+  "lastRunTotalCountEU": 10,
+  "subregions":[
+    {
+      "name": "US",
+      "fileControlPercent": 15.0,
+      "lastRunTotalCount": 13800
+    },
+    {
+      "name": "CAN",
+      "fileControlPercent": 15.0,
+      "lastRunTotalCount": 832
+    },
+    {
+      "name": "EU",
+      "fileControlPercent": 300.0,
+      "lastRunTotalCount": 10
+    }
+  ]
 }
