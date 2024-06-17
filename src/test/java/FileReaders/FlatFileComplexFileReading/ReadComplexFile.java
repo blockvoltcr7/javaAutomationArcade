@@ -19,27 +19,35 @@ public class ReadComplexFile {
     }
 
 
+
     public static HashSet<String> fetchLinesAfterText(String filePath, String searchText) {
+        // Create a new HashSet to store the lines
         HashSet<String> fetchedLines = new HashSet<>();
 
+        // Use a try-with-resources statement to open the file and automatically close it when done
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             boolean fetchNextLine = false;
 
+            // Read the file line by line
             while ((line = reader.readLine()) != null) {
+                // If the previous line was the search text, add the current line to the HashSet
                 if (fetchNextLine) {
                     fetchedLines.add(line);
                     fetchNextLine = false;
                 }
 
+                // If the current line is the search text, set fetchNextLine to true
                 if (line.trim().equals(searchText)) {
                     fetchNextLine = true;
                 }
             }
         } catch (IOException e) {
+            // Print the stack trace for any IOExceptions
             e.printStackTrace();
         }
 
+        // Return the HashSet of lines
         return fetchedLines;
     }
 }
