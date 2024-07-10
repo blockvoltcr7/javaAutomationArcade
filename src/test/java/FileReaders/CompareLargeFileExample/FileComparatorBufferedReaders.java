@@ -35,10 +35,11 @@ public class FileComparatorBufferedReaders {
             // Read lines from both files until the end of the first file is reached
             while ((line1 = br1.readLine()) != null) {
 
+                System.out.println("line1: " + line1);
 
                 // If the lines are not equal, print a message and exit the loop
                 if (!line1.equals(line2)) {
-                    mismatches.add("Files differ at line " + lineNumber);
+                    mismatches.add(line2);
                 }
 
                 // Increment the line number
@@ -46,6 +47,8 @@ public class FileComparatorBufferedReaders {
 
                 // Read the next line from the second file
                 line2 = br2.readLine();
+                System.out.println("line2: " + line2);
+
             }
 
             // If there are still lines left in either file, print a message
@@ -65,4 +68,9 @@ public class FileComparatorBufferedReaders {
             System.out.println(mismatch);
         }
     }
+
+
+
+
+
 }
