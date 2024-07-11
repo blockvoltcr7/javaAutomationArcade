@@ -85,8 +85,10 @@ public class OptimizedFileCompareBufferedreader {
                     String line1 = extractLine(buffer1, lineStart, i);
                     String line2 = extractLine(buffer2, lineStart, i);
 
-                    mismatches.add(String.format("Mismatch at byte %d (line %d):%nFile1: %s%nFile2: %s",
-                            start + i, lineNumber, line1, line2));
+                    String mismatch = String.format("Mismatch at byte %d (line %d):%nFile1: %s%nFile2: %s",
+                            start + i, lineNumber, line1, line2);
+                    System.out.println(mismatch);
+                    mismatches.add(line2);
 
                     // Skip to the end of this line
                     while (i < buffer1.limit() && buffer1.get(i) != '\n') {

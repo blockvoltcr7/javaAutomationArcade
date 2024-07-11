@@ -8,7 +8,7 @@ import java.util.Random;
 public class FileDataGenerator {
 
     static String file1 = "src/test/java/FileReaders/CompareLargeFileExample/File1.txt";
-    private static final int NUMBER_OF_LINES = 200000;
+    private static final int NUMBER_OF_LINES = 2000000;
 
     public static void main(String[] args) {
         generateFileData(file1, NUMBER_OF_LINES);
