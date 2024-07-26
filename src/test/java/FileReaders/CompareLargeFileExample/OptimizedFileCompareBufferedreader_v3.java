@@ -30,7 +30,7 @@ public class OptimizedFileCompareBufferedreader_v3 {
     }
 
     public static List<String> compareFiles(String file1Path, String file2Path) throws IOException, InterruptedException, ExecutionException {
-        long startTime = System.currentTimeMillis();
+
 
         ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         List<CompletableFuture<List<String>>> futures = new ArrayList<>();
@@ -59,17 +59,9 @@ public class OptimizedFileCompareBufferedreader_v3 {
                 allMismatches.addAll(future.get());
             }
 
-            // Handle the case where one file is longer than the other
-//            if (file1Size != file2Size) {
-//                allMismatches.add(String.format("File size mismatch. File1: %d bytes, File2: %d bytes", file1Size, file2Size));
-//            }
-
         } finally {
             executor.shutdown();
         }
-
-        long endTime = System.currentTimeMillis();
-        System.out.printf("Comparison completed in %.2f seconds.%n", (endTime - startTime) / 1000.0);
 
         return allMismatches;
     }
@@ -77,6 +69,11 @@ public class OptimizedFileCompareBufferedreader_v3 {
     private static List<String> compareChunk(FileChannel channel1, FileChannel channel2, long start, long end) {
         List<String> mismatches = new ArrayList<>();
         try {
+
+
+            /**
+             *
+             */
             long size1 = Math.min(end - start, channel1.size() - start);
             long size2 = Math.min(end - start, channel2.size() - start);
             MappedByteBuffer buffer1 = channel1.map(FileChannel.MapMode.READ_ONLY, start, size1);
