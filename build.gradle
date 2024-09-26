@@ -57,6 +57,8 @@ dependencies {
     testImplementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
 }
 
 test {
