@@ -1,12 +1,16 @@
 package DuplicateRecords;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DuplicateAccountIdsInFile {
     public static void main(String[] args) {
-        String filePath = "/Users/samisabir-idrissi/code/java/SDETautomation/src/test/java/DuplicateRecords/accountids.txt"; // Replace with the path to your text file
+        String filePath = "src/test/java/DuplicateRecords/accountids.txt"; // Replace with the path to your text file
 
         Set<String> duplicateAccountIds = findDuplicateAccountIds(filePath);
 
@@ -45,16 +49,13 @@ public class DuplicateAccountIdsInFile {
     }
 
     public static void writeAccountIdsToFile(String filePath, Set<Integer> accountIds) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            // Use Java Streams to write account IDs to the file
-            accountIds.stream().forEach(accountId -> {
-                try {
-                    writer.write(accountId);
-                    writer.newLine(); // Add a newline character to separate accounts on different lines
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+        try {
+            List<String> accountIdsAsString = accountIds.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+
+            Files.write(Paths.get(filePath), accountIdsAsString);
+
             System.out.println("Duplicate Account IDs written to: " + filePath);
         } catch (IOException e) {
             e.printStackTrace();

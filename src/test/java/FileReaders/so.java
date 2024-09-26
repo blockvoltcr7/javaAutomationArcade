@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class ComapreHashMaps {
+public class so {
 
     public static void main(String[] args) {
 
