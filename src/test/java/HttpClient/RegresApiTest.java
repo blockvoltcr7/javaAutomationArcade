@@ -11,20 +11,24 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class RegresApiTest {
     private static final String BASE_URL = "https://reqres.in/api/users";
+    private static final int MAX_CONCURRENT_REQUESTS = 100; // Adjust this value based on your system's capacity
 
     public static void main(String[] args) {
         int numberOfCores = Runtime.getRuntime().availableProcessors();
         int threadPoolSize = 2 * numberOfCores; // Start with 2 * number of cores
         ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
+        Semaphore semaphore = new Semaphore(MAX_CONCURRENT_REQUESTS);
 
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
         try {
             for (int i = 0; i < 36000; i++) {
+                semaphore.acquire(); // Acquire a permit before submitting a request
                 CompletableFuture<?> future = CompletableFuture.runAsync(() -> {
                     try {
                         // Set up headers
@@ -57,9 +61,10 @@ public class RegresApiTest {
                         }).exceptionally(ex -> {
                             ex.printStackTrace();
                             return null;
-                        });
+                        }).whenComplete((result, ex) -> semaphore.release()); // Release the permit after the request completes
                     } catch (Exception e) {
                         e.printStackTrace();
+                        semaphore.release(); // Ensure the permit is released in case of an exception
                     }
                 }, executor);
                 futures.add(future);
@@ -67,6 +72,8 @@ public class RegresApiTest {
 
             // Wait for all futures to complete
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             executor.shutdown();
             try {
