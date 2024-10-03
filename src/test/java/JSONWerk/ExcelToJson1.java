@@ -59,8 +59,11 @@ public class ExcelToJson1 {
                 int rowNumber = 1;
                 while (rowIterator.hasNext()) {
                     Row row = rowIterator.next();
-                    Map<String, Object> rowData = new LinkedHashMap<>();
+                    if (isRowEmpty(row)) {
+                        break; // Stop processing if an empty row is encountered
+                    }
 
+                    Map<String, Object> rowData = new LinkedHashMap<>();
                     // Iterate through each cell in the row
                     for (int i = 0; i < columnNames.size(); i++) {
                         Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
@@ -96,17 +99,36 @@ public class ExcelToJson1 {
             case NUMERIC:
                 // Check if the numeric value is a date
                 if (DateUtil.isCellDateFormatted(cell)) {
-                    return cell.getDateCellValue();
+                    return cell.getDateCellValue().toString();
                 } else {
-                    return cell.getNumericCellValue();
+                    return String.valueOf(cell.getNumericCellValue());
                 }
             case BOOLEAN:
-                return cell.getBooleanCellValue();
+                return String.valueOf(cell.getBooleanCellValue());
             case FORMULA:
-                return cell.getCellFormula();
+                // Evaluate the formula and return the result as a string
+                FormulaEvaluator evaluator = cell.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator();
+                CellValue cellValue = evaluator.evaluate(cell);
+                return cellValue.formatAsString();
             default:
                 return ""; // Return empty string for blank or error cells
         }
+    }
+
+    /**
+     * Checks if a row is empty.
+     *
+     * @param row The row to check
+     * @return True if the row is empty, false otherwise
+     */
+    private static boolean isRowEmpty(Row row) {
+        for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++) {
+            Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+            if (cell != null && cell.getCellType() != CellType.BLANK) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
