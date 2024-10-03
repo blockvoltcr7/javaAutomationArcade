@@ -6,6 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -99,7 +100,9 @@ public class ExcelToJson1 {
             case NUMERIC:
                 // Check if the numeric value is a date
                 if (DateUtil.isCellDateFormatted(cell)) {
-                    return cell.getDateCellValue().toString();
+                    // Format the date to "yyyy-MM-dd HH:mm:ss"
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    return dateFormat.format(cell.getDateCellValue());
                 } else {
                     return String.valueOf(cell.getNumericCellValue());
                 }
