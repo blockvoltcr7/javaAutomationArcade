@@ -14,6 +14,15 @@ public class JSONPlay1 {
         System.out.println("Number of matching files: " + matchingFileCount);
     }
 
+    /**
+     * Returns the number of files in the provided directory that match the specified pattern.
+     *
+     * @param directoryPath the path to the directory
+     * @param region        the region to match
+     * @param count         the count to match
+     * @param diversification the diversification to match
+     * @return the number of matching files
+     */
     public static int getMatchingFileCount(String directoryPath, String region, String count, String diversification) {
         File directory = new File(directoryPath);
         if (!directory.isDirectory()) {
