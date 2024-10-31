@@ -41,6 +41,18 @@ public class ArrayListPractice1 {
             System.out.println("stock: "+itr.next());
         }
 
+        //provide another way to iterate oover the array
+        for(int i = 0; i<stockslist.size();i++){
+            System.out.println("stock: "+stockslist.get(i));
+        }
+
+        //iterate over the array using streams
+        stockslist.stream().forEach(stock -> System.out.println("stock: "+stock));
+
+        //use streams on the array and filter for a specific stock
+        stockslist.stream().filter(stock -> stock.equalsIgnoreCase("AMZN")).forEach(stock -> System.out.println("AMZN stock: "+stock));
+
+
         ArrayList<String> stockListMyFavorites = new ArrayList<>();
 
         stockListMyFavorites.addAll(stockslist);
