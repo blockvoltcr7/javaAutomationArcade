@@ -64,7 +64,16 @@ public class FileComparator {
                     // Compare the specific "xmlplan" folder within the current folder
                     Path expectedXmlplan = folder.resolve("xmlplan");
                     Path actualXmlplan = actualFolder.resolve("xmlplan");
-                    XmlPlanComparator.compareXmlPlanDirectories(expectedXmlplan, actualXmlplan);
+
+                    // Check if only one xmlplan folder exists
+                    if (Files.exists(expectedXmlplan) ^ Files.exists(actualXmlplan)) {
+                        throw new RuntimeException("xmlplan folder missing in one of the directories: " + folderName);
+                    }
+
+                    // If both exist, perform the comparison
+                    if (Files.exists(expectedXmlplan) && Files.exists(actualXmlplan)) {
+                        XmlPlanComparator.compareXmlPlanDirectories(expectedXmlplan, actualXmlplan);
+                    }
                 }
             }
         }
@@ -105,9 +114,22 @@ public class FileComparator {
             if (Files.isDirectory(expectedPath)) {
                 compareAllFiles(expectedPath, actualPath);
             } else {
+                // Extract the last two parts of the expected and actual paths
+                int expectedNameCount = expectedPath.getNameCount();
+                int actualNameCount = actualPath.getNameCount();
+
+                Path expectedSubPath = expectedPath.subpath(Math.max(0, expectedNameCount - 2), expectedNameCount);
+                Path actualSubPath = actualPath.subpath(Math.max(0, actualNameCount - 2), actualNameCount);
+
+                System.out.println("Comparing: " + expectedSubPath + " vs " + actualSubPath);
+                // Compare the last two parts of the paths
+                if (!expectedSubPath.equals(actualSubPath)) {
+                    throw new RuntimeException("File path mismatch: " + expectedSubPath + " vs " + actualSubPath);
+                }
+
                 // Compare the contents of the files
                 if (!FileUtils.contentEquals(expectedPath.toFile(), actualPath.toFile())) {
-                    throw new RuntimeException("File content mismatch: " + elementPath);
+                    throw new RuntimeException("File content mismatch: " + expectedSubPath);
                 }
             }
         }
@@ -143,6 +165,45 @@ public class FileComparator {
         // If there are discrepancies, throw an exception with the error message
         if (errorMessage.length() > 0) {
             throw new RuntimeException(errorMessage.toString());
+        }
+    }
+
+    /**
+     * Compares all files in the xmlplan folder without checking if they are
+     * directories.
+     * It checks for file existence and content equality.
+     *
+     * @param expectedXmlplan The path to the expected xmlplan folder.
+     * @param actualXmlplan   The path to the actual xmlplan folder.
+     * @throws IOException If an I/O error occurs while accessing the files.
+     */
+    public static void compareXmlPlanFiles(Path expectedXmlplan, Path actualXmlplan) throws IOException {
+        Set<Path> expectedFiles, actualFiles;
+
+        // Stream through both expected and actual xmlplan folders to get their file
+        // names
+        try (Stream<Path> expectedStream = Files.list(expectedXmlplan);
+                Stream<Path> actualStream = Files.list(actualXmlplan)) {
+
+            expectedFiles = expectedStream.map(Path::getFileName).collect(Collectors.toSet()); // Collect expected file
+                                                                                               // names
+            actualFiles = actualStream.map(Path::getFileName).collect(Collectors.toSet()); // Collect actual file names
+        }
+
+        // Compare the sets of file names from both xmlplan folders
+        if (!expectedFiles.equals(actualFiles)) {
+            compareFilesSets(expectedFiles, actualFiles, expectedXmlplan.getFileName());
+        }
+
+        // Iterate through each expected file to compare contents
+        for (Path filePath : expectedFiles) {
+            Path expectedFilePath = expectedXmlplan.resolve(filePath); // Resolve the expected file path
+            Path actualFilePath = actualXmlplan.resolve(filePath); // Resolve the actual file path
+
+            // Compare the contents of the files
+            if (!FileUtils.contentEquals(expectedFilePath.toFile(), actualFilePath.toFile())) {
+                throw new RuntimeException("File content mismatch in xmlplan: " + filePath);
+            }
         }
     }
 }
