@@ -5,9 +5,16 @@ SELECT
         WHEN a.column_name IS NOT NULL THEN 'Only in PORTA'
         WHEN b.column_name IS NOT NULL THEN 'Only in PORTB'
     END AS presence,
-    NVL(a.data_type, b.data_type) AS data_type,
-    NVL(a.data_length, b.data_length) AS data_length,
-    NVL(a.nullable, b.nullable) AS nullable
+    a.data_type AS porta_data_type,
+    b.data_type AS portb_data_type,
+    a.data_length AS porta_data_length,
+    b.data_length AS portb_data_length,
+    a.nullable AS porta_nullable,
+    b.nullable AS portb_nullable,
+    CASE
+        WHEN a.data_type = b.data_type AND a.data_length = b.data_length THEN 'Match'
+        ELSE 'Mismatch'
+    END AS column_match
 FROM
     (SELECT column_name, data_type, data_length, nullable
      FROM all_tab_columns
