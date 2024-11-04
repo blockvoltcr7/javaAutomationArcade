@@ -20,6 +20,11 @@ public class SchemaComparator {
         try (Connection connA = DriverManager.getConnection(DB_URL + ";schema=SchemaA", USER, PASS);
              Connection connB = DriverManager.getConnection(DB_URL + ";schema=SchemaB", USER, PASS)) {
 
+            //add verification connection is successul
+            if (connA == null) {
+                System.out.println("Failed to make connection to SchemaA");
+                return;
+            }
             DatabaseMetaData metaA = connA.getMetaData();
             DatabaseMetaData metaB = connB.getMetaData();
 
@@ -48,10 +53,13 @@ public class SchemaComparator {
      */
     private static List<String> getTables(DatabaseMetaData meta) throws SQLException {
         List<String> tables = new ArrayList<>();
+        // Retrieve the table names from the database metadata
         ResultSet rs = meta.getTables(null, null, "%", new String[]{"TABLE"});
+        // Iterate through the result set and add each table name to the list
         while (rs.next()) {
             tables.add(rs.getString("TABLE_NAME"));
         }
+        // Return the list of table names
         return tables;
     }
 
