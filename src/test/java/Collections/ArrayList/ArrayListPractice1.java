@@ -7,6 +7,38 @@ import java.util.Iterator;
 public class ArrayListPractice1 {
 
 
+    // Common ArrayList interview questions and answers
+    /**
+     * Q: What is an ArrayList in Java?
+     * A: ArrayList is a resizable array implementation of the List interface.
+     * It allows for dynamic resizing and provides methods to manipulate the size of the array that is used internally to store the list.
+     *
+     * Q: How does ArrayList differ from an array?
+     * A: Unlike arrays, ArrayList can dynamically grow and shrink in size.
+     * Arrays have a fixed size, while ArrayList can adjust its size as elements are added or removed.
+     *
+     * Q: How do you add elements to an ArrayList?
+     * A: You can add elements to an ArrayList using the add() method. For example: arrayList.add("element");
+     *
+     * Q: How do you remove elements from an ArrayList?
+     * A: You can remove elements from an ArrayList using the remove() method. For example: arrayList.remove("element") or arrayList.remove(index);
+     *
+     * Q: How do you iterate over an ArrayList?
+     * A: You can iterate over an ArrayList using a for loop, enhanced for loop, Iterator, or streams.
+     *
+     * Q: Is ArrayList synchronized?
+     * A: No, ArrayList is not synchronized. If multiple threads access an ArrayList concurrently, it must be synchronized externally.
+     *
+     * Q: How do you convert an ArrayList to an array?
+     * A: You can convert an ArrayList to an array using the toArray() method. For example: String[] array = arrayList.toArray(new String[0]);
+     *
+     * Q: What is the default initial capacity of an ArrayList?
+     * A: The default initial capacity of an ArrayList is 10.
+     *
+     * Q: How does ArrayList handle resizing?
+     * A: When the ArrayList exceeds its current capacity, it increases its capacity by 50% of the current size.
+     */
+
     public static void main(String[] args) {
 
         ArrayList<String> stockslist = arrayListAndLoop();
