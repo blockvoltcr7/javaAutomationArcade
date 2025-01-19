@@ -24,13 +24,18 @@ class MacBookPro<Z>{
 public class GenericClassExample {
 
 	
-	public void testgeneric() {
-		
-		MacBookPro<Integer> mac2019	 = new MacBookPro<Integer>();
-		mac2019.value = 2400;
-		mac2019.displayType();
-		
-	}
-	
+	public void testGeneric() {
+    MacBookPro<Integer> mac2019 = new MacBookPro<>();
+    mac2019.setValue(2400);
+    mac2019.displayType();
+
+    MacBookPro<String> mac2020 = new MacBookPro<>();
+    mac2020.setValue("16-inch");
+    mac2020.displayType();
+
+    MacBookPro<Double> mac2021 = new MacBookPro<>();
+    mac2021.setValue(2.3);
+    mac2021.displayType();
+}
 
 }

@@ -44,7 +44,7 @@ dependencies {
     implementation 'io.rest-assured:spring-mock-mvc:4.4.0'
     implementation 'io.rest-assured:spring-web-test-client:4.4.0'
     implementation group: 'net.sf.trove4j', name: 'trove4j', version: '3.0.3'
-
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.1'
 
     testImplementation "io.reactivex.rxjava3:rxjava:3.0.0" // Update this to the latest version if needed
     testImplementation 'com.epam.reportportal:agent-java-testng:5.4.1'
