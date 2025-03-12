@@ -8,3 +8,7 @@ gradlew
 gradlew.bat
 .gradle/*
 .aider*
+
+
+.DS_Store
+target/
